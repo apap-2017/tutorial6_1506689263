@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Fragment</title>
-		<div th:fragment="links"> 
+	<head th:fragment="links">
+		<title th:text="${page_title}"></title>
 			<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"></link>
 			<link rel="stylesheet" type="text/css" href="../js/datatables.min.css"></link>
+			<link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        	<link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
+        	<link rel="stylesheet" type="text/css" href="../js/datatables.css"></link>
    			<script type="text/javascript" src="/js/datatables.min.js"></script>
-			<link rel="stylesheet" type="text/css" href="../js/datatables.css"></link>
 			<script>
 				$(document).ready( function () {
 	    			$('#idTable').DataTable();
@@ -16,7 +15,6 @@
 			</script>
 			<script type="text/javascript" charset="utf8" src="../js/datatables.min.js"></script>
 			<script type="text/javascript" charset="utf8" src="../js/datatables.js"></script>
-		</div>
 	</head>
 	<body>
 		<div th:fragment="header">

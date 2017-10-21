@@ -18,30 +18,34 @@ import com.example.tutorial6.service.StudentService;
 public class StudentController {
 	@Autowired
     StudentService studentDAO;
+	String page_title = "";
 
 
     @RequestMapping("/")
-    public String index()
+    public String index(Model model)
     {
+    	model.addAttribute("page_title", "Index");
         return "index";
     }
 
     @RequestMapping("/student/add")
-    public String add()
+    public String add(Model model)
     {
+    	model.addAttribute("page_title", "Add Student");
         return "form-add";
     }
 
 
-    @RequestMapping("/student/add/submit")
+    @RequestMapping(value = "/student/add/submit", method = RequestMethod.GET)
     public String addSubmit(
             @RequestParam(value = "npm", required = false) String npm,
             @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "gpa", required = false) double gpa)
+            @RequestParam(value = "gpa", required = false) double gpa,
+            Model model)
     {
         StudentModel student = new StudentModel (npm, name, gpa, null);
         studentDAO.addStudent(student);
-
+        model.addAttribute("page_title", "Success Add");
         return "success-add";
     }
 
@@ -54,9 +58,12 @@ public class StudentController {
 
         if (student != null) {
             model.addAttribute("student", student);
+            model.addAttribute("page_title", "View Student by NPM");
             return "view";
         } else {
             model.addAttribute("npm", npm);
+            model.addAttribute("page_title", "Student not found");
+            
             return "not-found";
         }
     }
@@ -70,9 +77,11 @@ public class StudentController {
 
         if (student != null) {
             model.addAttribute("student", student);
+            model.addAttribute("page_title", "View Student by NPM");
             return "view";
         } else {
             model.addAttribute("npm", npm);
+            model.addAttribute("page_title", "Student not found");
             return "not-found";
         }
     }
@@ -83,7 +92,7 @@ public class StudentController {
     {
         List<StudentModel> students = studentDAO.selectAllStudents();
         model.addAttribute("students", students);
-
+        model.addAttribute("page_title", "View All Students");
         return "viewall";
     }
 
@@ -94,9 +103,11 @@ public class StudentController {
     	StudentModel student = studentDAO.selectStudent(npm);
     	if (student != null) {
     		studentDAO.deleteStudent(npm);
+    		model.addAttribute("page_title", "Delete");
             return "delete"; 
         } else {
         	model.addAttribute ("npm", npm);
+        	model.addAttribute("page_title", "Student not found");
             return "not-found";
         }    
     }
@@ -108,18 +119,21 @@ public class StudentController {
 
         if (student != null) {
         	model.addAttribute("student", student);
+        	model.addAttribute("page_title", "Update Student");
             return "form-update";
         	
         } else {
         	model.addAttribute("npm", npm);
+        	model.addAttribute("page_title", "Student not found");
             return "not-found";
         }
     }
     
     @RequestMapping(value = "/student/update/submit", method = RequestMethod.POST)
-    public String updateSubmit(StudentModel student)
+    public String updateSubmit(StudentModel student, Model model)
     {
     	studentDAO.updateStudent(student);
+    	model.addAttribute("page_title", "Update Student Success");
         return "success-update";
     }
     
@@ -130,9 +144,11 @@ public class StudentController {
         CourseModel course = studentDAO.selectCourse(id_course);
         if (course != null) {
             model.addAttribute ("course", course);
+            model.addAttribute("page_title", "View All Students");
             return "viewcourses";
         } else {
             model.addAttribute ("id_course", id_course);
+            model.addAttribute("page_title", "Not Found Student");
             return "not-found-student";
         }
     }
